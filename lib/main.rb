@@ -144,6 +144,34 @@ class GameBoard
         i += 1
         end
     end
+
+    def up_diag_game_over?
+        grid = self.board_grid
+        i = 0
+        winning_seqs = []
+        while i < grid.length - 1  do
+        if grid[i] == grid[i+6] || grid[i] == grid[i-6]
+            flattened = winning_seqs.flatten
+            if flattened == [] || flattened.none? { |item| item == (i-5) } 
+                winning_seqs.push([i+1])
+            end
+            winning_seqs.map! do |arr|
+                if arr != nil
+                    if arr.include?(i-5)
+                        arr.push(i+1)
+                        if arr.length == 4
+                            self.game_over = true
+                            return arr.reverse
+                        end
+                    end
+                end
+                arr
+            end  
+        end
+        i += 1
+        end
+        
+    end
     
 
 end

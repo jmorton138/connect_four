@@ -324,6 +324,54 @@ describe GameBoard do
         end
     end
 
+    describe "#up_diag_game_over?" do
+        context "when up diagonal 4 in a row" do
+            subject(:win_up_diag) { described_class.new }
+            before do
+                moves = [36, 30, 24, 18]
+                for move in moves
+                    win_up_diag.board_grid.map! { |space| space == move ? space = 'X' : space}
+                end
+            end
+            it "changes @game_over to true" do
+                expect{ win_up_diag.up_diag_game_over? }.to change { win_up_diag.game_over }.from(false).to(true)
+                win_up_diag.up_diag_game_over?
+            end
+
+            it "returns winning sequence" do
+                winning_seq = [36, 30, 24, 18]
+                expect(win_up_diag.up_diag_game_over?).to eq(winning_seq)
+                win_up_diag.up_diag_game_over?
+            end
+        end
+
+        context "when up diagonal 4 in a row with partial up diagonals above" do
+            subject(:win_up_diag_complex) { described_class.new }
+            before do
+                p1_moves = [36, 30, 24, 18]
+                for move in p1_moves
+                    win_up_diag_complex.board_grid.map! { |space| space == move ? space = "X" : space }
+                end
+                p2_moves = [29, 23, 17]
+                for move in p2_moves
+                    win_up_diag_complex.board_grid.map! { |space| space == move ? space = "O" : space }
+                end
+            end
+
+            it "changes @game_over to true" do
+                expect{ win_up_diag_complex.up_diag_game_over? }.to change { win_up_diag_complex.game_over }.from(false).to(true)
+                win_up_diag_complex.up_diag_game_over?
+            end
+
+            it "returns winning sequence" do
+                winning_seq = [36, 30, 24, 18]
+                expect(win_up_diag_complex.up_diag_game_over?).to eq(winning_seq)
+                win_up_diag_complex.up_diag_game_over?
+            end
+            
+        end
+    end
+
 
 
 
