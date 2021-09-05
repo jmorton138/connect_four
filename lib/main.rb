@@ -101,6 +101,10 @@ class GameBoard
         i = 0
         winning_column = []
         while i < grid.length - 1  do
+            if grid[i] == grid[i+7] && grid[i] != grid[i-7]
+                winning_column = []
+                counter = 1
+            end
             if grid[i] == grid[i+7] || grid[i] == grid[i-7]
                 counter += 1
                 winning_column.push(i + 1)
@@ -108,9 +112,6 @@ class GameBoard
                     self.game_over = true
                     return winning_column
                 end
-            # elsif
-            #     winning_column = []
-            #     counter = 1
             end
             i += 1
         end
@@ -119,25 +120,31 @@ class GameBoard
 
     def down_diag_game_over?
         grid = self.board_grid
-        counter = 1
         i = 0
-        winning_seq = []
+        winning_seqs = []
         while i < grid.length - 1  do
-            if grid[i] == grid[i+8] || grid[i] == grid[i-8]   
-                counter += 1
-                winning_seq.push(i + 1)
-                if counter > 4
-                    self.game_over = true
-                    return winning_seq
-                end
-            # else
-            #     #winning_seq = []
-            #     counter = 1
+        if grid[i] == grid[i+8] || grid[i] == grid[i-8]
+            flattened = winning_seqs.flatten
+            if flattened == [] || flattened.none? { |item| item == (i-7) } 
+                winning_seqs.push([i+1])
             end
-            i += 1
+            winning_seqs.map! do |arr|
+                if arr != nil
+                    if arr.include?(i-7)
+                        arr.push(i+1)
+                        if arr.length == 4
+                            self.game_over = true
+                            return arr
+                        end
+                    end
+                end
+                arr
+            end  
         end
-
+        i += 1
+        end
     end
+    
 
 end
 
@@ -149,3 +156,5 @@ end
 # for move in moves
 #     grid.map! { |space| space == move ? space = "X" : space }
 # end
+
+

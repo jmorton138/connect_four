@@ -295,6 +295,33 @@ describe GameBoard do
                 win_down_diag.down_diag_game_over?
             end
         end
+
+        context "when 4 in a down slope diagonal with partial down diagonals above winning line" do
+            subject(:win_down_diag_complex) { described_class.new }
+
+            before do
+                p1_moves = [9, 17, 25, 23]
+                for move in p1_moves
+                    win_down_diag_complex.board_grid.map! { |space| space == move ? space = "X" : space }
+                end
+                p2_moves = [16, 24, 32, 40]
+                for move in p2_moves
+                    win_down_diag_complex.board_grid.map! { |space| space == move ? space = "O" : space }
+                end
+            end
+
+            it "change @game_over to true" do
+                expect{ win_down_diag_complex.down_diag_game_over? }.to change { win_down_diag_complex.game_over }.from(false).to(true)
+                win_down_diag_complex.down_diag_game_over?
+            end
+
+            it "returns winning sequence" do
+                winning_seq = [16, 24, 32, 40]
+                expect(win_down_diag_complex.down_diag_game_over?).to eq(winning_seq)
+                win_down_diag_complex.down_diag_game_over?
+            end
+
+        end
     end
 
 
@@ -313,3 +340,5 @@ end
 #  29  30  31  32  33  34  35 
 # ---------------------------
 #  36  37  38  39  40  41  42 
+
+# rspec spec/connect_four_spec.rb 
