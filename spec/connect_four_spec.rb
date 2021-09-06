@@ -245,33 +245,6 @@ describe GameBoard do
                 win_col_complex.vertical_game_over?
             end
         end
-
-        context "when partial columns above winning column" do
-            subject(:win_col_edge) { described_class.new }
-
-            before do
-                p1_moves = [16, 23, 30, 37]
-                for move in p1_moves
-                    win_col_edge.board_grid.map! { |space| space == move ? space = "X" : space }
-                end
-                p2_moves = [2, 9, 38]
-                for move in p2_moves
-                    win_col_edge.board_grid.map! { |space| space == move ? space = "O" : space }
-                end
-            end
-
-            it "changes @game_over to true" do
-                expect{ win_col_edge.vertical_game_over? }.to change { win_col_edge.game_over }.from(false).to(true)
-                win_col_edge.vertical_game_over?
-            end
-
-            it "returns winning sequence" do
-                winning_column = [16, 23, 30, 37]
-                expect(win_col_edge.vertical_game_over?).to eq(winning_column)
-                win_col_edge.vertical_game_over?
-            end
-
-        end
     end
 
     describe "#down_diag_game_over?" do
@@ -372,8 +345,48 @@ describe GameBoard do
         end
     end
 
+    describe "#game_loop" do
+        context "when @game_over is true" do
+            subject(:loop) { described_class.new }
+            
+            it "stops loop" do
+                loop.game_over = true
+                game_over_message = "Game completed"
+                expect(loop).to receive(:puts).with(game_over_message)
+                loop.game_loop
+            end
+        end
 
+        # context "when @game_over is false for 4 turns and true 1 turn" do
+        #     subject(:loop_4_times) { described_class.new }
+        #     before do
+        #         allow(loop_4_times).to receive(:@game_over).and_return(false, false, false, false, false, true)
+        #     end
+        #     it "renders gameboard 4 times" do
+        #         expect(loop_4_times).to receive(:render_grid).exactly(4).times
+        #         expect(loop_4_times).to receive(:render_available_moves).exactly(4).times
+        #         loop_4_times.game_loop
+        #     end
 
+        #     # it "validates players move once" do
+        #     # end
+
+        #     # it "updates player 1's mover array once" do
+        #     # end
+
+        #     # it "checks for 4 in a row once" do
+        #     # end
+
+        #     # it "doesn't receive player 2's prompt" do
+        #     # end
+
+        #     # it "stops loop" do
+        #     #     game_over_message = "Game Over"
+        #     #     expect(loop_once).not_to receive(:puts).with(game_over_message)
+        #     #     loop_once.game_loop
+        #     # end
+        # end
+    end
 
 end
 
@@ -390,3 +403,8 @@ end
 #  36  37  38  39  40  41  42 
 
 # rspec spec/connect_four_spec.rb 
+
+
+# when player enters invalid then valid move 
+# when p1 wins
+# when p2 wins
