@@ -1,26 +1,5 @@
-# 1. Arrange -> set up the test (examples: initializing objects, let
-#               variables, updating values of instance variables).
-# 2. Act ->     execute the logic to test (example: calling a method to run).
-# 3. Assert ->  expect the results of arrange & act.
 
 
-# In general, you probably have 4 different types of methods:
-# 1. Command - Changes the observable state, but does not return a value.
-# 2. Query - Returns a result, but does not change the observable state.
-# 3. Script - Only calls other methods, usually without returning anything.
-# 4. Looping Script - Only calls other methods, usually without returning
-#    anything, and stops when certain conditions are met.
-
-
-#game start
-#create a grid for my board
-#render board to terminal using puts
-#game_loop :
-## player 1 chooses avaliable space(X)
-## validate space (error loop for this case)
-## game updates available spaces by incrementing chosen space by -7 and substituting space with player symbol
-##game checks if 4 in a row, if so game loop ends
-## loop resumes for alternate player (O)
 require_relative '../lib/main.rb'
 
 describe GameBoard do
@@ -345,6 +324,7 @@ describe GameBoard do
         end
     end
 
+
     describe "#game_loop" do
         context "when @game_over is true" do
             subject(:loop) { described_class.new }
@@ -374,22 +354,3 @@ describe GameBoard do
     end
 
 end
-
-# 1   2   3   4   5   6   7  
-# ---------------------------
-#  8   9   10  11  12  13  14 
-# ---------------------------
-#  15  16  17  18  19  20  21 
-# ---------------------------
-#  22  23  24  25  26  27  28 
-# ---------------------------
-#  29  30  31  32  33  34  35 
-# ---------------------------
-#  36  37  38  39  40  41  42 
-
-# rspec spec/connect_four_spec.rb 
-
-
-# when player enters invalid then valid move 
-# when p1 wins
-# when p2 wins

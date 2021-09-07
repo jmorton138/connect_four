@@ -207,8 +207,8 @@ class GameBoard
         
     end
     
-    def player_move
-        puts "Choose your move"
+    def player_move(player)
+        puts "Player #{player}, choose your move"
         player_choice = gets.chomp.to_i
     end
     
@@ -223,7 +223,7 @@ class GameBoard
             render_grid(board_grid)
             valid_moves = render_available_moves(self.p1_moves, self.p2_moves)
             puts "Your available moves are: #{valid_moves}"
-            until validate_player_choice(valid_moves, player_choice = player_move())
+            until validate_player_choice(valid_moves, player_choice = player_move(player))
                 puts "Invalid option."
                 player_choice
             end
@@ -234,7 +234,8 @@ class GameBoard
             up_diag_game_over?
             i += 1
         end
-        puts "Game completed."
+        puts "Game completed. Player #{player} wins"
+        puts ""
         render_grid(board_grid)
         puts ""
     end
