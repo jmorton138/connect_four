@@ -348,44 +348,29 @@ describe GameBoard do
     describe "#game_loop" do
         context "when @game_over is true" do
             subject(:loop) { described_class.new }
+            before do
+                allow(loop).to receive(:game_over?) { true }
+            end
             
             it "stops loop" do
-                loop.game_over = true
-                game_over_message = "Game completed"
-                expect(loop).to receive(:puts).with(game_over_message)
+                expect(loop).to receive(:game_over?).once
                 loop.game_loop
             end
         end
 
-        # context "when @game_over is false for 4 turns and true 1 turn" do
-        #     subject(:loop_4_times) { described_class.new }
-        #     before do
-        #         allow(loop_4_times).to receive(:@game_over).and_return(false, false, false, false, false, true)
-        #     end
-        #     it "renders gameboard 4 times" do
-        #         expect(loop_4_times).to receive(:render_grid).exactly(4).times
-        #         expect(loop_4_times).to receive(:render_available_moves).exactly(4).times
-        #         loop_4_times.game_loop
-        #     end
+        context "when @game_over is false for 5 turns and true 1 turn" do
+            subject(:loop_5_times) { described_class.new }
+            before do
+                allow(loop_5_times).to receive(:player_move).and_return(36, 29, 37, 30, 38)
+                allow(loop_5_times).to receive(:game_over?).and_return(false, false, false, false, false, true)
+            end
 
-        #     # it "validates players move once" do
-        #     # end
+            it "renders gameboard 5 times, breaks loop, then renders final grid" do
+                expect(loop_5_times).to receive(:render_grid).exactly(6).times
+                loop_5_times.game_loop
+            end
 
-        #     # it "updates player 1's mover array once" do
-        #     # end
-
-        #     # it "checks for 4 in a row once" do
-        #     # end
-
-        #     # it "doesn't receive player 2's prompt" do
-        #     # end
-
-        #     # it "stops loop" do
-        #     #     game_over_message = "Game Over"
-        #     #     expect(loop_once).not_to receive(:puts).with(game_over_message)
-        #     #     loop_once.game_loop
-        #     # end
-        # end
+        end
     end
 
 end

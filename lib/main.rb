@@ -19,7 +19,9 @@ class GameBoard
         end
         array
     end
-
+    def game_over?
+        @game_over
+    end
     def render_grid(board_grid)
         for i in board_grid
             if i % 7 == 0 && i != board_grid.last
@@ -43,7 +45,6 @@ class GameBoard
     def render_available_moves(p1_moves, p2_moves, moves = self.og_board_grid.last(7))
         #locate available moves and move to array
         if p1_moves == nil && p2_moves == nil
-            p p1_moves
             return moves
         elsif p1_moves != nil && p2_moves == nil
             p_moves = p1_moves
@@ -66,6 +67,7 @@ class GameBoard
     end
 
     def validate_player_choice(valid_moves, player_choice)
+
         if valid_moves.include?(player_choice)
             true
         else
@@ -205,9 +207,14 @@ class GameBoard
         
     end
     
+    def player_move
+        puts "Choose your move"
+        player_choice = gets.chomp.to_i
+    end
+    
     def game_loop
         i = 1
-        while self.game_over != true
+        while self.game_over? != true
             if i.odd?
                 player = 1
             else
@@ -216,11 +223,9 @@ class GameBoard
             render_grid(board_grid)
             valid_moves = render_available_moves(self.p1_moves, self.p2_moves)
             puts "Your available moves are: #{valid_moves}"
-            puts "Choose your move"
-            player_choice = gets.chomp.to_i
-            until validate_player_choice(valid_moves, player_choice)
-                puts "Invalid option. Choose another move."
-                player_choice = gets.chomp.to_i
+            until validate_player_choice(valid_moves, player_choice = player_move())
+                puts "Invalid option."
+                player_choice
             end
             update_grid(player_choice, player)
             horizontal_game_over?
@@ -229,8 +234,9 @@ class GameBoard
             up_diag_game_over?
             i += 1
         end
-        #render_grid(board_grid)
-        puts "Game completed"
+        puts "Game completed."
+        render_grid(board_grid)
+        puts ""
     end
 end
 
